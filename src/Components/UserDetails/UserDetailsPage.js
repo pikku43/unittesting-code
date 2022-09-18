@@ -1,55 +1,30 @@
 import React , { useState }from "react";
 
-export default function UserDetailsPage(data){
-const userDetails = JSON.parse(localStorage.getItem('data'));
-  console.log("@@@@@@@@",userDetails);
+export default function UserDetailsPage()
+{
 
-  const [rows, setRows] = useState([
+	const userDetails = JSON.parse(localStorage.getItem('data'));
+	
+const [isEdit, setEdit] = React.useState(false);
+const [disable, setDisable] = React.useState(true);
+const [rows, setRows] = useState([
     { id: 1,
-         name: userDetails.name,
-         email: userDetails.email,
+        name: userDetails.name,
+        email: userDetails.email,
         password: userDetails.password ,
         city: userDetails.city,
         age: userDetails.age
     },
 ]);
-const [open, setOpen] = React.useState(false);
-	const [isEdit, setEdit] = React.useState(false);
-	const [disable, setDisable] = React.useState(true);
-	const [showConfirm, setShowConfirm] = React.useState(false);
-  // Function to handle edit
-	const handleEdit = (i) => {
-		// If edit mode is true setEdit will
-		// set it to false and vice versa
-		setEdit(!isEdit);
-	};
-
-    // Function For adding new row object
-	const handleAdd = () => {
-		setRows([
-			...rows,
-			{
-				id: rows.length + 1, 
-                name: "",
-				email: "",
-                password:"",
-                age:"",
-                city:"",
-			},
-		]);
-		setEdit(true);
-	};
-
-    // Function to handle save
+    // save
 	const handleSave = () => {
 		setEdit(!isEdit);
 		setRows(rows);
 		console.log("saved : ", rows);
 		setDisable(true);
-		setOpen(true);
 	};
 
-    // The handleInputChange handler can be set up to handle
+    // inputchange
 	const handleInputChange = (e, index) => {
 		setDisable(false);
 		const { name, value } = e.target;
@@ -58,29 +33,17 @@ const [open, setOpen] = React.useState(false);
 		setRows(list);
 	};
 
-    // Showing delete confirmation to users
-	const handleConfirm = () => {
-		setShowConfirm(true);
-	};
-
-    // Handle the case of delete confirmation
-	const handleNo = () => {
-		setShowConfirm(false);
-	};
-
-    // Handle the case of delete confirmation where
+    // delete
 	const handleRemoveClick = (i) => {
 		const list = [...rows];
 		list.splice(i, 1);
 		setRows(list);
-		setShowConfirm(false);
 	};
 
   return (
     <div class="container">
       <h1>UserDetails Table</h1>
-     
-      <table class="rwd-table">
+     <table class="rwd-table">
         <tbody>
           <tr>
             <th>UserName</th>
@@ -90,14 +53,12 @@ const [open, setOpen] = React.useState(false);
             <th>Age</th>
             <th>Action</th>
           </tr>
-          {/* <tr> */}
           {rows.map((row, i) => {
-			return (
-				
-				<tr>
+			return (				
+			<tr>
 					{isEdit ? (
 					<>
-						<td>
+					<td>
 						<input
 							value={row.name}
 							name="name"
@@ -132,6 +93,7 @@ const [open, setOpen] = React.useState(false);
 							onChange={(e) => handleInputChange(e, i)}
 						/>
 						</td>
+						{/* <td></td> */}
 				</>
 					) : (
 					<>
@@ -140,32 +102,17 @@ const [open, setOpen] = React.useState(false);
 						<td>{row.password}</td>
                         <td>{row.city}</td>
 						<td>{row.age}</td>
-						
+						{/* <td></td> */}
 					</>
 					)}
-                    <tr>
-                    {isEdit &&
-                    // (
-					// <button className="mr10" onClick={handleConfirm}>
-                    //     Clear
-					// </button>
-					// ) 
-                    // :
+                   
+                    {/* {isEdit &&
                      (
-					<button className="mr10" onClick={handleConfirm}>
-                        Delete
-					</button>
-					)}
-                    {/* {isEdit ? (
-					<button className="mr10" onClick={handleConfirm}>
-                        Clear
-					</button>
-					) : (
-					<button className="mr10" onClick={handleConfirm}>
+					<button className="mr10" onClick={() => handleRemoveClick(i)}>
                         Delete
 					</button>
 					)} */}
-                    </tr>
+                   
 					<td>
             {isEdit ? (
 			<div>
@@ -179,52 +126,20 @@ const [open, setOpen] = React.useState(false);
 					<button  onClick={handleSave}>
 						SAVE
 					</button>
-					)}
+					)}&nbsp;
+					<button className="mr10" onClick={() => handleRemoveClick(i)}>
+                        Delete
+					</button>
 				</div>
 				)}
 			</div>
 			) : (
-				<button align="left" onClick={handleEdit}>
+				<button align="left" onClick={()=>setEdit(!isEdit)}>
 				EDIT
 				</button>
 			)}
             </td>
-					{/* {showConfirm && (
-					<div>
-						<div
-						open={showConfirm}
-						onClose={handleNo}
-						aria-labelledby="alert-dialog-title"
-						aria-describedby="alert-dialog-description"
-						>
-						<div id="alert-dialog-title">
-							{"Confirm Delete"}
-						</div>
-						<div>
-							<div id="alert-dialog-description">
-							Are you sure to delete
-							</div>
-						</div>
-						<div>
-							<button
-							onClick={() => handleRemoveClick(i)}
-							color="primary"
-							autoFocus
-							>
-							Yes
-							</button>
-							<button
-							onClick={handleNo}
-							color="primary"
-							autoFocus
-							>
-							No
-							</button>
-						</div>
-						</div>
-					</div>
-					)} */}
-				</tr>
+</tr>
 				
 			);
 			})}
