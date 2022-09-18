@@ -1,0 +1,10 @@
+{
+    //is git enables
+    "git.enabled":true,
+
+    //path to the  git executable
+    "git.patch":"C:\\Users\\PKUMA180\\AppData\\Local\\Programs\\Git\\cmd\\git.exe",
+    // "json.schemas": [
+    
+    // ]
+}
