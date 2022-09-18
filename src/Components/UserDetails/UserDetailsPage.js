@@ -169,7 +169,6 @@ const [open, setOpen] = React.useState(false);
 					<td>
             {isEdit ? (
 			<div>
-				
 				{rows.length !== 0 && (
 				<div>
 					{disable ? (
